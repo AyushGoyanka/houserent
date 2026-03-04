@@ -67,6 +67,74 @@
 
 // export default PropertyDetails;
 
+// import { useEffect, useState } from "react";
+// import { useParams } from "react-router-dom";
+// import axios from "axios";
+// import "./PropertyDetails.css";
+
+// function PropertyDetails() {
+//   const { id } = useParams();
+//   const [property, setProperty] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const fetchProperty = async () => {
+//       try {
+//         const res = await axios.get(
+//           `http://localhost:5000/api/properties/${id}`
+//         );
+
+//         setProperty(res.data);
+//       } catch (error) {
+//         console.log("Error fetching property");
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchProperty();
+//   }, [id]);
+
+//   if (loading) {
+//     return <h2 style={{ padding: "40px" }}>Loading...</h2>;
+//   }
+
+//   if (!property) {
+//     return <h2 style={{ padding: "40px" }}>Property Not Found</h2>;
+//   }
+
+//   return (
+//     <div className="details-container">
+//       {/* ✅ Property Image */}
+//       {property.image && (
+//         <img src={property.image} alt={property.title} />
+//       )}
+
+//       <div className="details-info">
+//         <h1>{property.title}</h1>
+
+//         <p className="location">{property.location}</p>
+
+//         <p className="price">₹ {property.price}</p>
+
+//         <p className="description">{property.description}</p>
+
+//         {/* ✅ Owner Details */}
+//         {property.owner && (
+//           <div className="contact-box">
+//             <h3>Contact Owner</h3>
+//             <p>👤 {property.owner.name}</p>
+//             <p>📧 {property.owner.email}</p>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default PropertyDetails;
+
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -81,12 +149,13 @@ function PropertyDetails() {
     const fetchProperty = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/properties/${id}`
+          `${import.meta.env.VITE_API_URL}/api/properties/${id}`
         );
 
         setProperty(res.data);
+
       } catch (error) {
-        console.log("Error fetching property");
+        console.log("Error fetching property ❌", error);
       } finally {
         setLoading(false);
       }

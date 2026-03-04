@@ -119,104 +119,6 @@
 // // export default Properties;
 
 
-import "./Properties.css";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-function Properties() {
-  const navigate = useNavigate();
-
-  const [properties, setProperties] = useState([]);
-
-  // ✅ Search & Filter States
-  const [search, setSearch] = useState("");
-  const [location, setLocation] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-
-  // ✅ Fetch Properties From Backend
-  const fetchProperties = async () => {
-    const res = await axios.get("http://localhost:5000/api/properties", {
-      params: {
-        search,
-        location,
-        minPrice,
-        maxPrice,
-      },
-    });
-
-    setProperties(res.data);
-  };
-
-  // ✅ Load Properties On Page Load
-  useEffect(() => {
-    fetchProperties();
-  }, []);
-
-  return (
-    <div className="properties">
-      <h1>Available Properties</h1>
-
-      {/* ✅ SEARCH + FILTER SECTION */}
-      <div className="filters">
-        <input
-          placeholder="Search Title..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <input
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-        />
-
-        <input
-          placeholder="Min Price"
-          value={minPrice}
-          onChange={(e) => setMinPrice(e.target.value)}
-        />
-
-        <input
-          placeholder="Max Price"
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(e.target.value)}
-        />
-
-        <button onClick={fetchProperties}>
-          Apply Filter
-        </button>
-      </div>
-
-      {/* ✅ PROPERTY GRID */}
-      <div className="property-grid">
-        {properties.map((property) => (
-          <div key={property._id} className="property-card">
-            <img src={property.image} alt={property.title} />
-
-            <div className="property-info">
-              <h3>{property.title}</h3>
-              <p>{property.location}</p>
-              <p className="price">₹ {property.price}</p>
-
-              <button
-                onClick={() =>
-                  navigate(`/properties/${property._id}`)
-                }
-              >
-                View Details
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-export default Properties;
-
 
 
 // import { useEffect, useState } from "react";
@@ -323,3 +225,224 @@ export default Properties;
 // }
 
 // export default MyProperties;
+
+
+
+
+// import "./Properties.css";
+// import { useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+
+// function Properties() {
+//   const navigate = useNavigate();
+
+//   const [properties, setProperties] = useState([]);
+
+//   // ✅ Search & Filter States
+//   const [search, setSearch] = useState("");
+//   const [location, setLocation] = useState("");
+//   const [minPrice, setMinPrice] = useState("");
+//   const [maxPrice, setMaxPrice] = useState("");
+
+//   // ✅ Fetch Properties From Backend
+//   const fetchProperties = async () => {
+//     const res = await axios.get("http://localhost:5000/api/properties", {
+//       params: {
+//         search,
+//         location,
+//         minPrice,
+//         maxPrice,
+//       },
+//     });
+
+//     setProperties(res.data);
+//   };
+
+//   // ✅ Load Properties On Page Load
+//   useEffect(() => {
+//     fetchProperties();
+//   }, []);
+
+//   return (
+//     <div className="properties">
+//       <h1>Available Properties</h1>
+
+//       {/* ✅ SEARCH + FILTER SECTION */}
+//       <div className="filters">
+//         <input
+//           placeholder="Search Title..."
+//           value={search}
+//           onChange={(e) => setSearch(e.target.value)}
+//         />
+
+//         <input
+//           placeholder="Location"
+//           value={location}
+//           onChange={(e) => setLocation(e.target.value)}
+//         />
+
+//         <input
+//           placeholder="Min Price"
+//           value={minPrice}
+//           onChange={(e) => setMinPrice(e.target.value)}
+//         />
+
+//         <input
+//           placeholder="Max Price"
+//           value={maxPrice}
+//           onChange={(e) => setMaxPrice(e.target.value)}
+//         />
+
+//         <button onClick={fetchProperties}>
+//           Apply Filter
+//         </button>
+//       </div>
+
+//       {/* ✅ PROPERTY GRID */}
+//       <div className="property-grid">
+//         {properties.map((property) => (
+//           <div key={property._id} className="property-card">
+//             <img src={property.image} alt={property.title} />
+
+//             <div className="property-info">
+//               <h3>{property.title}</h3>
+//               <p>{property.location}</p>
+//               <p className="price">₹ {property.price}</p>
+
+//               <button
+//                 onClick={() =>
+//                   navigate(`/properties/${property._id}`)
+//                 }
+//               >
+//                 View Details
+//               </button>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Properties;
+
+
+import "./Properties.css";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+function Properties() {
+  const navigate = useNavigate();
+
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // ✅ Search & Filter States
+  const [search, setSearch] = useState("");
+  const [location, setLocation] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+
+  // ✅ Fetch Properties From Backend
+  const fetchProperties = async () => {
+    try {
+      setLoading(true);
+
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/properties`,
+        {
+          params: {
+            search,
+            location,
+            minPrice,
+            maxPrice,
+          },
+        }
+      );
+
+      setProperties(res.data);
+
+    } catch (error) {
+      console.error("Error fetching properties ❌", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ Load Properties On Page Load
+  useEffect(() => {
+    fetchProperties();
+  }, []);
+
+  return (
+    <div className="properties">
+      <h1>Available Properties</h1>
+
+      {/* ✅ SEARCH + FILTER SECTION */}
+      <div className="filters">
+        <input
+          placeholder="Search Title..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <input
+          placeholder="Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        />
+
+        <input
+          type="number"
+          placeholder="Min Price"
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
+        />
+
+        <input
+          type="number"
+          placeholder="Max Price"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
+        />
+
+        <button onClick={fetchProperties}>
+          Apply Filter
+        </button>
+      </div>
+
+      {/* ✅ PROPERTY GRID */}
+      {loading && <p>Loading...</p>}
+
+      <div className="property-grid">
+        {!loading && properties.length === 0 && (
+          <p>No Properties Found</p>
+        )}
+
+        {properties.map((property) => (
+          <div key={property._id} className="property-card">
+            <img src={property.image} alt={property.title} />
+
+            <div className="property-info">
+              <h3>{property.title}</h3>
+              <p>{property.location}</p>
+              <p className="price">₹ {property.price}</p>
+
+              <button
+                onClick={() =>
+                  navigate(`/properties/${property._id}`)
+                }
+              >
+                View Details
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Properties;
