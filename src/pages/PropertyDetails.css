@@ -1,0 +1,51 @@
+/* .contact-box {
+  margin-top: 25px;
+  padding: 15px;
+  background-color: #1f2937;
+  border-radius: 8px;
+}
+
+.contact-box h3 {
+  margin-bottom: 10px;
+  color: #3b82f6;
+}
+
+.contact-box p {
+  margin-bottom: 6px;
+  color: #d1d5db;
+} */
+
+.contact-box {
+  margin-top: 25px;
+  padding: 20px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  transition: 0.3s;
+}
+
+/* hover effect */
+.contact-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgba(59,130,246,0.35);
+}
+
+.contact-box h3 {
+  margin-bottom: 12px;
+  color: #38bdf8;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.contact-box p {
+  margin-bottom: 8px;
+  color: #cbd5f5;
+  font-size: 14px;
+}
+
+/* optional icons spacing */
+.contact-box p span {
+  margin-right: 8px;
+}
